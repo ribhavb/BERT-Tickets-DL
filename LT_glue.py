@@ -119,14 +119,14 @@ def pruning_model(model,px):
 
     parameters_to_prune =[]
     for ii in range(12):
-        parameters_to_prune.append((model.bert.encoder.layer[ii].attention.self.query, 'weight'))
-        parameters_to_prune.append((model.bert.encoder.layer[ii].attention.self.key, 'weight'))
-        parameters_to_prune.append((model.bert.encoder.layer[ii].attention.self.value, 'weight'))
-        parameters_to_prune.append((model.bert.encoder.layer[ii].attention.output.dense, 'weight'))
-        parameters_to_prune.append((model.bert.encoder.layer[ii].intermediate.dense, 'weight'))
-        parameters_to_prune.append((model.bert.encoder.layer[ii].output.dense, 'weight'))
+        parameters_to_prune.append((model.module.bert.encoder.layer[ii].attention.self.query, 'weight'))
+        parameters_to_prune.append((model.module.bert.encoder.layer[ii].attention.self.key, 'weight'))
+        parameters_to_prune.append((model.module.bert.encoder.layer[ii].attention.self.value, 'weight'))
+        parameters_to_prune.append((model.module.bert.encoder.layer[ii].attention.output.dense, 'weight'))
+        parameters_to_prune.append((model.module.bert.encoder.layer[ii].intermediate.dense, 'weight'))
+        parameters_to_prune.append((model.module.bert.encoder.layer[ii].output.dense, 'weight'))
 
-    parameters_to_prune.append((model.bert.pooler.dense, 'weight'))
+    parameters_to_prune.append((model.module.bert.pooler.dense, 'weight'))
     parameters_to_prune = tuple(parameters_to_prune)
 
     prune.global_unstructured(
@@ -140,27 +140,27 @@ def see_weight_rate(model):
     sum_list = 0
     zero_sum = 0
     for ii in range(12):
-        sum_list = sum_list+float(model.bert.encoder.layer[ii].attention.self.query.weight.nelement())
-        zero_sum = zero_sum+float(torch.sum(model.bert.encoder.layer[ii].attention.self.query.weight == 0))
+        sum_list = sum_list+float(model.module.bert.encoder.layer[ii].attention.self.query.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.module.bert.encoder.layer[ii].attention.self.query.weight == 0))
 
-        sum_list = sum_list+float(model.bert.encoder.layer[ii].attention.self.key.weight.nelement())
-        zero_sum = zero_sum+float(torch.sum(model.bert.encoder.layer[ii].attention.self.key.weight == 0))
+        sum_list = sum_list+float(model.module.bert.encoder.layer[ii].attention.self.key.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.module.bert.encoder.layer[ii].attention.self.key.weight == 0))
 
-        sum_list = sum_list+float(model.bert.encoder.layer[ii].attention.self.value.weight.nelement())
-        zero_sum = zero_sum+float(torch.sum(model.bert.encoder.layer[ii].attention.self.value.weight == 0))
+        sum_list = sum_list+float(model.module.bert.encoder.layer[ii].attention.self.value.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.module.bert.encoder.layer[ii].attention.self.value.weight == 0))
 
-        sum_list = sum_list+float(model.bert.encoder.layer[ii].attention.output.dense.weight.nelement())
-        zero_sum = zero_sum+float(torch.sum(model.bert.encoder.layer[ii].attention.output.dense.weight == 0))
+        sum_list = sum_list+float(model.module.bert.encoder.layer[ii].attention.output.dense.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.module.bert.encoder.layer[ii].attention.output.dense.weight == 0))
 
-        sum_list = sum_list+float(model.bert.encoder.layer[ii].intermediate.dense.weight.nelement())
-        zero_sum = zero_sum+float(torch.sum(model.bert.encoder.layer[ii].intermediate.dense.weight == 0))
+        sum_list = sum_list+float(model.module.bert.encoder.layer[ii].intermediate.dense.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.module.bert.encoder.layer[ii].intermediate.dense.weight == 0))
 
-        sum_list = sum_list+float(model.bert.encoder.layer[ii].output.dense.weight.nelement())
-        zero_sum = zero_sum+float(torch.sum(model.bert.encoder.layer[ii].output.dense.weight == 0))
+        sum_list = sum_list+float(model.module.bert.encoder.layer[ii].output.dense.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.module.bert.encoder.layer[ii].output.dense.weight == 0))
 
 
-    sum_list = sum_list+float(model.bert.pooler.dense.weight.nelement())
-    zero_sum = zero_sum+float(torch.sum(model.bert.pooler.dense.weight == 0))
+    sum_list = sum_list+float(model.module.bert.pooler.dense.weight.nelement())
+    zero_sum = zero_sum+float(torch.sum(model.module.bert.pooler.dense.weight == 0))
  
 
     return 100*zero_sum/sum_list
