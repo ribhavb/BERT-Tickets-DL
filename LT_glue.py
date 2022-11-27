@@ -31,6 +31,8 @@ import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
+from transformers import ALBERT_PRETRAINED_CONFIG_ARCHIVE_MAP
+from transformers import BERT_PRETRAINED_MODEL_ARCHIVE_LIST
 
 from transformers import (
     WEIGHTS_NAME,
@@ -75,22 +77,23 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-ALL_MODELS = sum(
-    (
-        tuple(conf.pretrained_config_archive_map.keys())
-        for conf in (
-            BertConfig,
-            XLNetConfig,
-            XLMConfig,
-            RobertaConfig,
-            DistilBertConfig,
-            AlbertConfig,
-            XLMRobertaConfig,
-            FlaubertConfig,
-        )
-    ),
-    (),
-)
+# ALL_MODELS = sum(
+#     (
+#         tuple(conf.pretrained_config_archive_map.keys())
+#         for conf in (
+#             BertConfig,
+#             XLNetConfig,
+#             XLMConfig,
+#             RobertaConfig,
+#             DistilBertConfig,
+#             AlbertConfig,
+#             XLMRobertaConfig,
+#             FlaubertConfig,
+#         )
+#     ),
+#     (),
+# )
+ALL_MODELS = "bert"
 
 MODEL_CLASSES = {
     "bert": (BertConfig, BertForSequenceClassification, BertTokenizer),
@@ -530,9 +533,9 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False):
             label_list=label_list,
             max_length=args.max_seq_length,
             output_mode=output_mode,
-            pad_on_left=bool(args.model_type in ["xlnet"]),  # pad on the left for xlnet
-            pad_token=tokenizer.convert_tokens_to_ids([tokenizer.pad_token])[0],
-            pad_token_segment_id=4 if args.model_type in ["xlnet"] else 0,
+            # pad_on_left=bool(args.model_type in ["xlnet"]),  # pad on the left for xlnet
+            # pad_token=tokenizer.convert_tokens_to_ids([tokenizer.pad_token])[0],
+            # pad_token_segment_id=4 if args.model_type in ["xlnet"] else 0,
         )
         if args.local_rank in [-1, 0]:
             logger.info("Saving features into cached file %s", cached_features_file)
