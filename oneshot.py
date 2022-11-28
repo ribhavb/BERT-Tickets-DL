@@ -69,6 +69,8 @@ config = BertConfig.from_pretrained(
 )
 
 
+prune_amount = args.rate
+
 if args.model == 'glue':
 
     if args.weight == 'rand':
@@ -97,8 +99,8 @@ if args.model == 'glue':
         else:
             weight_dict[key] = model_dict[key]
 
-    torch.save(mask_dict, output+'mask.pt')
-    torch.save(weight_dict, output+'weight.pt')
+    torch.save(mask_dict, output+str(prune_amount)+'_mask.pt')
+    torch.save(weight_dict, output+str(prune_amount)+'_weight.pt')
 
 elif args.model == 'squad':
 
