@@ -788,12 +788,12 @@ def main():
         cache_dir=args.cache_dir if args.cache_dir else None,
     )
 
-    origin_model_dict = rewind(model.module.state_dict())
+    origin_model_dict = rewind(model.state_dict())
 
     if args.local_rank == 0:
         torch.distributed.barrier()  # Make sure only the first process in distributed training will download model & vocab
 
-    model.module.to(args.device)
+    model.to(args.device)
 
     logger.info("Training/evaluation parameters %s", args)
 
