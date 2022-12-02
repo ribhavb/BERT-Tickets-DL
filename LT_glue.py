@@ -211,10 +211,10 @@ def train(args, train_dataset, model, tokenizer, orig):
     no_decay = ["bias", "LayerNorm.weight"]
     optimizer_grouped_parameters = [
         {
-            "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+            "params": [p for n, p in model.module.named_parameters() if not any(nd in n for nd in no_decay)],
             "weight_decay": args.weight_decay,
         },
-        {"params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
+        {"params": [p for n, p in model.module.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
     ]
 
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
@@ -281,7 +281,7 @@ def train(args, train_dataset, model, tokenizer, orig):
         logger.info("  Will skip the first %d steps in the first epoch", steps_trained_in_current_epoch)
 
     tr_loss, logging_loss = 0.0, 0.0
-    model.zero_grad()
+    model.module.zero_grad()
     train_iterator = trange(
         epochs_trained, int(args.num_train_epochs), desc="Epoch", disable=args.local_rank not in [-1, 0],
     )
@@ -295,7 +295,7 @@ def train(args, train_dataset, model, tokenizer, orig):
                 steps_trained_in_current_epoch -= 1
                 continue
 
-            model.train()
+            model.module.train()
             batch = tuple(t.to(args.device) for t in batch)
             inputs = {"input_ids": batch[0], "attention_mask": batch[1], "labels": batch[3]}
             if args.model_type != "distilbert":
@@ -325,11 +325,11 @@ def train(args, train_dataset, model, tokenizer, orig):
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
                 else:
-                    torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+                    torch.nn.utils.clip_grad_norm_(model.module.parameters(), args.max_grad_norm)
 
                 optimizer.step()
                 scheduler.step()  # Update learning rate schedule
-                model.zero_grad()
+                model.module.zero_grad()
                 global_step += 1
 
                 if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
@@ -377,9 +377,9 @@ def train(args, train_dataset, model, tokenizer, orig):
                     print('zero_rate = ', rate_weight_equal_zero)
 
                     print('rewinding')
-                    model_dict = model.state_dict()
+                    model_dict = model.module.state_dict()
                     model_dict.update(orig)
-                    model.load_state_dict(model_dict)
+                    model.module.load_state_dict(model_dict)
 
                     mask_dict = {}
                     for key in model_dict.keys():
@@ -392,10 +392,10 @@ def train(args, train_dataset, model, tokenizer, orig):
                     no_decay = ["bias", "LayerNorm.weight"]
                     optimizer_grouped_parameters = [
                         {
-                            "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+                            "params": [p for n, p in model.module.named_parameters() if not any(nd in n for nd in no_decay)],
                             "weight_decay": args.weight_decay,
                         },
-                        {"params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
+                        {"params": [p for n, p in model.module.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
                     ]
 
                     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
@@ -461,7 +461,7 @@ def evaluate(args, model, tokenizer, prefix=""):
         preds = None
         out_label_ids = None
         for batch in tqdm(eval_dataloader, desc="Evaluating"):
-            model.eval()
+            model.module.eval()
             batch = tuple(t.to(args.device) for t in batch)
 
             with torch.no_grad():
@@ -788,12 +788,12 @@ def main():
         cache_dir=args.cache_dir if args.cache_dir else None,
     )
 
-    origin_model_dict = rewind(model.state_dict())
+    origin_model_dict = rewind(model.module.state_dict())
 
     if args.local_rank == 0:
         torch.distributed.barrier()  # Make sure only the first process in distributed training will download model & vocab
 
-    model.to(args.device)
+    model.module.to(args.device)
 
     logger.info("Training/evaluation parameters %s", args)
 
