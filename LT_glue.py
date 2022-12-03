@@ -289,7 +289,8 @@ def train(args, train_dataset, model, tokenizer, orig):
     for _ in train_iterator:
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
         for step, batch in enumerate(epoch_iterator):
-
+            
+            print("at start of inner training loop")
             # Skip past any already trained steps if resuming training
             if steps_trained_in_current_epoch > 0:
                 steps_trained_in_current_epoch -= 1
@@ -322,6 +323,7 @@ def train(args, train_dataset, model, tokenizer, orig):
                 len(epoch_iterator) <= args.gradient_accumulation_steps
                 and (step + 1) == len(epoch_iterator)
             ):
+                print("in stepping if")
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
                 else:
@@ -333,6 +335,7 @@ def train(args, train_dataset, model, tokenizer, orig):
                 global_step += 1
 
                 if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
+                    print("in writer if")
                     logs = {}
                     if (
                         args.local_rank == -1 and args.evaluate_during_training
@@ -397,7 +400,6 @@ def train(args, train_dataset, model, tokenizer, orig):
                         },
                         {"params": [p for n, p in model.module.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
                     ]
-                    print(optimizer_grouped_parameters)
                     print("after rewind")
 
                     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
