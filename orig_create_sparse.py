@@ -47,7 +47,7 @@ def pruning_model_random(model,px):
 
     prune.global_unstructured(
         parameters_to_prune,
-        pruning_method=prune.random_unstructured,
+        pruning_method=prune.RandomUnstructured,
         amount=px,
     )
     for (layer,wt) in parameters_to_prune:
@@ -112,6 +112,37 @@ def pruning_model_lower(model,px):
     
     return model
 
+def see_weight_rate(model):
+
+    sum_list = 0
+    zero_sum = 0
+    for ii in range(12):
+        sum_list = sum_list+float(model.encoder.layer[ii].attention.self.query.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.encoder.layer[ii].attention.self.query.weight == 0))
+
+        sum_list = sum_list+float(model.encoder.layer[ii].attention.self.key.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.encoder.layer[ii].attention.self.key.weight == 0))
+
+        sum_list = sum_list+float(model.encoder.layer[ii].attention.self.value.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.encoder.layer[ii].attention.self.value.weight == 0))
+
+        sum_list = sum_list+float(model.encoder.layer[ii].attention.output.dense.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.encoder.layer[ii].attention.output.dense.weight == 0))
+
+        sum_list = sum_list+float(model.encoder.layer[ii].intermediate.dense.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.encoder.layer[ii].intermediate.dense.weight == 0))
+
+        sum_list = sum_list+float(model.encoder.layer[ii].output.dense.weight.nelement())
+        zero_sum = zero_sum+float(torch.sum(model.encoder.layer[ii].output.dense.weight == 0))
+
+
+    sum_list = sum_list+float(model.pooler.dense.weight.nelement())
+    zero_sum = zero_sum+float(torch.sum(model.pooler.dense.weight == 0))
+ 
+
+    return 100*zero_sum/sum_list
+
+
 config = BertConfig.from_pretrained(
     'bert-base-uncased'
 )
@@ -122,7 +153,8 @@ model = BertModel.from_pretrained(
         )
 model.save_pretrained(f"full_prune/bert-base")
 
-sparsity_values = [0.1,0.2,0.3,0.4,0.45,0.49,0.495]
+sparsity_values = [0.1,0.3,0.45,0.495]
+# sparsity_values = [0.495]
 
 
 for s in sparsity_values:
@@ -131,5 +163,9 @@ for s in sparsity_values:
             from_tf=bool(".ckpt" in 'bert-base-uncased'),
             config=config
         )
-    model = pruning_model_whole(model,s)
+    model = pruning_model_upper(model,s)
+
+    zero = see_weight_rate(model)
+    print('zero rate', zero)
+
     model.save_pretrained(f"full_prune/bert-{s}")
