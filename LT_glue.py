@@ -290,7 +290,7 @@ def train(args, train_dataset, model, tokenizer, orig):
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
         for step, batch in enumerate(epoch_iterator):
             
-            print("at start of inner training loop")
+            # print("at start of inner training loop")
             # Skip past any already trained steps if resuming training
             if steps_trained_in_current_epoch > 0:
                 steps_trained_in_current_epoch -= 1
@@ -311,11 +311,13 @@ def train(args, train_dataset, model, tokenizer, orig):
             if args.gradient_accumulation_steps > 1:
                 loss = loss / args.gradient_accumulation_steps
 
-            print("before backprop")
+            # print("before backprop")
             if args.fp16:
                 with amp.scale_loss(loss, optimizer) as scaled_loss:
+                    print("before backpop")
                     scaled_loss.backward()
             else:
+                print("before backprop")
                 loss.backward()
 
             tr_loss += loss.item()
@@ -395,10 +397,10 @@ def train(args, train_dataset, model, tokenizer, orig):
                     no_decay = ["bias", "LayerNorm.weight"]
                     optimizer_grouped_parameters = [
                         {
-                            "params": [p for n, p in model.module.named_parameters() if not any(nd in n for nd in no_decay)],
+                            "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
                             "weight_decay": args.weight_decay,
                         },
-                        {"params": [p for n, p in model.module.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
+                        {"params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
                     ]
                     print("after rewind")
 
