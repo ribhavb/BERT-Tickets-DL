@@ -6,7 +6,7 @@ pip install -r requirements.txt
 
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/full_prune/bert-0.1 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name mnli \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -18,7 +18,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --output_dir upper-results/bert-0.1/mnli
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/full_prune/bert-0.1 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name sst2 \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -30,7 +30,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --output_dir upper-results/bert-0.1/sst2
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/full_prune/bert-0.1 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name qnli \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -42,7 +42,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --output_dir upper-results/bert-0.1/qnli
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/full_prune/bert-0.1 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name stsb \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -54,7 +54,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --output_dir upper-results/bert-0.1/stsb
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/full_prune/bert-0.1 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name mrpc \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -66,7 +66,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --output_dir upper-results/bert-0.1/mrpc
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/language-modeling/run_mlm.py \
-    --model_name_or_path ~/deep_learning/BERT-Tickets-DL/full_prune/bert-0.1 \
+    --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
     --dataset_name wikitext \
     --dataset_config_name wikitext-2-raw-v1 \
     --per_device_train_batch_size 8 \
