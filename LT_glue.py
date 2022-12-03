@@ -397,6 +397,7 @@ def train(args, train_dataset, model, tokenizer, orig):
                         },
                         {"params": [p for n, p in model.module.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
                     ]
+                    print("after rewind")
 
                     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
                     scheduler = get_linear_schedule_with_warmup(
