@@ -122,8 +122,8 @@ model = BertModel.from_pretrained(
         )
 model.save_pretrained(f"full_prune/bert-base")
 
-# sparsity_values = [0.1,0.2,0.3,0.4,0.45,0.49,0.495]
-sparsity_values = [0.1]
+sparsity_values = [0.1,0.2,0.3,0.4,0.45,0.49,0.495]
+
 
 for s in sparsity_values:
     model = BertModel.from_pretrained(
