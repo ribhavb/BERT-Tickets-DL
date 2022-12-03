@@ -281,7 +281,7 @@ def train(args, train_dataset, model, tokenizer, orig):
         logger.info("  Will skip the first %d steps in the first epoch", steps_trained_in_current_epoch)
 
     tr_loss, logging_loss = 0.0, 0.0
-    model.module.zero_grad()
+    model.zero_grad()
     train_iterator = trange(
         epochs_trained, int(args.num_train_epochs), desc="Epoch", disable=args.local_rank not in [-1, 0],
     )
@@ -296,7 +296,7 @@ def train(args, train_dataset, model, tokenizer, orig):
                 steps_trained_in_current_epoch -= 1
                 continue
 
-            model.module.train()
+            model.train()
             batch = tuple(t.to(args.device) for t in batch)
             inputs = {"input_ids": batch[0], "attention_mask": batch[1], "labels": batch[3]}
             if args.model_type != "distilbert":
@@ -305,7 +305,6 @@ def train(args, train_dataset, model, tokenizer, orig):
                 )  # XLM, DistilBERT, RoBERTa, and XLM-RoBERTa don't use segment_ids
             outputs = model(**inputs)
             loss = outputs[0]  # model outputs are always tuple in transformers (see doc)
-            print("before loss update")
             if args.n_gpu > 1:
                 loss = loss.mean()  # mean() to average on multi-gpu parallel training
             if args.gradient_accumulation_steps > 1:
@@ -329,15 +328,14 @@ def train(args, train_dataset, model, tokenizer, orig):
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
                 else:
-                    torch.nn.utils.clip_grad_norm_(model.module.parameters(), args.max_grad_norm)
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 
                 optimizer.step()
                 scheduler.step()  # Update learning rate schedule
-                model.module.zero_grad()
+                model.zero_grad()
                 global_step += 1
 
                 if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
-                    print("in writer if")
                     logs = {}
                     if (
                         args.local_rank == -1 and args.evaluate_during_training
@@ -382,9 +380,9 @@ def train(args, train_dataset, model, tokenizer, orig):
                     print('zero_rate = ', rate_weight_equal_zero)
 
                     print('rewinding')
-                    model_dict = model.module.state_dict()
+                    model_dict = model.state_dict()
                     model_dict.update(orig)
-                    model.module.load_state_dict(model_dict)
+                    model.load_state_dict(model_dict)
 
                     mask_dict = {}
                     for key in model_dict.keys():
@@ -474,7 +472,7 @@ def evaluate(args, model, tokenizer, prefix=""):
         preds = None
         out_label_ids = None
         for batch in tqdm(eval_dataloader, desc="Evaluating"):
-            model.module.eval()
+            model.eval()
             batch = tuple(t.to(args.device) for t in batch)
 
             with torch.no_grad():
