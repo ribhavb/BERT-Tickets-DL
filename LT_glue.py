@@ -397,12 +397,14 @@ def train(args, train_dataset, model, tokenizer, orig):
                         },
                         {"params": [p for n, p in model.module.named_parameters() if any(nd in n for nd in no_decay)], "weight_decay": 0.0},
                     ]
+                    print(optimizer_grouped_parameters)
                     print("after rewind")
 
                     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
                     scheduler = get_linear_schedule_with_warmup(
                         optimizer, num_warmup_steps=args.warmup_steps, num_training_steps=t_total
                     )
+                    print("after scheduler")
 
         
                     # torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
@@ -410,24 +412,30 @@ def train(args, train_dataset, model, tokenizer, orig):
                     # logger.info("Saving optimizer and scheduler states to %s", output_dir)
 
             if pruning_step == 10:
+                print("break, last pruning step")
                 epoch_iterator.close()
                 break       
 
             if args.max_steps > 0 and global_step > args.max_steps:
+                print("break, done with all steps")
                 epoch_iterator.close()
                 break
 
         if args.max_steps > 0 and global_step > args.max_steps:
+            print("break, outerloop, done with all steps")
             train_iterator.close()
             break
 
         if pruning_step == 10:
+            print("break, outer loop, last pruning step")
             epoch_iterator.close()
             break 
 
     if args.local_rank in [-1, 0]:
+        print('in later if')
         tb_writer.close()
 
+    print("saving")
     torch.save(record_result, os.path.join(args.output_dir, "result.pt"))
 
     return global_step, tr_loss / global_step
