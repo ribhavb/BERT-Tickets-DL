@@ -146,12 +146,12 @@ def see_weight_rate(model):
 config = BertConfig.from_pretrained(
     'bert-base-uncased'
 )
-model = BertModel.from_pretrained(
-            'bert-base-uncased',
-            from_tf=bool(".ckpt" in 'bert-base-uncased'),
-            config=config
-        )
-model.save_pretrained(f"full_prune/bert-base")
+# model = BertModel.from_pretrained(
+#             'bert-base-uncased',
+#             from_tf=bool(".ckpt" in 'bert-base-uncased'),
+#             config=config
+#         )
+# model.save_pretrained(f"full_prune/bert-base")
 
 sparsity_values = [0.1,0.3,0.45,0.495]
 # sparsity_values = [0.495]
@@ -168,4 +168,4 @@ for s in sparsity_values:
     zero = see_weight_rate(model)
     print('zero rate', zero)
 
-    model.save_pretrained(f"full_prune/bert-{s}")
+    model.save_pretrained(f"upper_prune/bert-{s}")
