@@ -163,7 +163,7 @@ for s in sparsity_values:
             from_tf=bool(".ckpt" in 'bert-base-uncased'),
             config=config
         )
-    model = pruning_model_upper(model,s)
+    model = pruning_model_lower(model,s)
 
     zero = see_weight_rate(model)
     print('zero rate', zero)

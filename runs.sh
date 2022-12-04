@@ -15,7 +15,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 1.0 \
-  --output_dir upper-results/bert-0.495/mnli
+  --output_dir lower-results/bert-0.495/mnli
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
   --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.495 \
@@ -27,7 +27,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 2.0 \
-  --output_dir upper-results/bert-0.495/sst2
+  --output_dir lower-results/bert-0.495/sst2
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
   --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.495 \
@@ -39,7 +39,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 1.0 \
-  --output_dir upper-results/bert-0.495/qnli
+  --output_dir lower-results/bert-0.495/qnli
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
   --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.495 \
@@ -51,7 +51,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 5.0 \
-  --output_dir upper-results/bert-0.495/stsb
+  --output_dir lower-results/bert-0.495/stsb
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
   --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.495 \
@@ -63,7 +63,7 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 5.0 \
-  --output_dir upper-results/bert-0.495/mrpc
+  --output_dir lower-results/bert-0.495/mrpc
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/language-modeling/run_mlm.py \
     --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.495 \
@@ -74,4 +74,4 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
     --do_train \
     --do_eval \
     --tokenizer_name "bert-base-uncased" \
-    --output_dir upper-results/bert-0.495/mlm
+    --output_dir lower-results/bert-0.495/mlm
