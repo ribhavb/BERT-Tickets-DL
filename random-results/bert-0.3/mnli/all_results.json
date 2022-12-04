@@ -1,0 +1,21 @@
+{
+    "epoch": 1.0,
+    "epoch_mm": 1.0,
+    "eval_accuracy": 0.7657666836474784,
+    "eval_accuracy_mm": 0.771460537021969,
+    "eval_loss": 0.5763986110687256,
+    "eval_loss_mm": 0.551089346408844,
+    "eval_runtime": 5.2269,
+    "eval_runtime_mm": 5.281,
+    "eval_samples": 9815,
+    "eval_samples_mm": 9832,
+    "eval_samples_per_second": 1877.771,
+    "eval_samples_per_second_mm": 1861.782,
+    "eval_steps_per_second": 58.734,
+    "eval_steps_per_second_mm": 58.323,
+    "train_loss": 0.6827713955179188,
+    "train_runtime": 551.0384,
+    "train_samples": 392702,
+    "train_samples_per_second": 712.658,
+    "train_steps_per_second": 5.568
+}
