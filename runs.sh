@@ -6,7 +6,7 @@ pip install -r requirements.txt
 
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.3 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name mnli \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -15,10 +15,10 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 1.0 \
-  --output_dir lower-results/bert-0.3/mnli
+  --output_dir lower-results/bert-0.1/mnli
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.3 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name sst2 \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -27,10 +27,10 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 2.0 \
-  --output_dir lower-results/bert-0.3/sst2
+  --output_dir lower-results/bert-0.1/sst2
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.3 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name qnli \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -39,10 +39,10 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 1.0 \
-  --output_dir lower-results/bert-0.3/qnli
+  --output_dir lower-results/bert-0.1/qnli
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.3 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name stsb \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -51,10 +51,10 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 5.0 \
-  --output_dir lower-results/bert-0.3/stsb
+  --output_dir lower-results/bert-0.1/stsb
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/text-classification/run_glue.py \
-  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.3 \
+  --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
   --task_name mrpc \
   --tokenizer_name "bert-base-uncased" \
   --do_train \
@@ -63,10 +63,10 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
   --per_device_train_batch_size 32 \
   --learning_rate 2e-5 \
   --num_train_epochs 5.0 \
-  --output_dir lower-results/bert-0.3/mrpc
+  --output_dir lower-results/bert-0.1/mrpc
 
 python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/pytorch/language-modeling/run_mlm.py \
-    --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.3 \
+    --model_name_or_path ~/deep_learning/BERT-Tickets-DL/upper_prune/bert-0.1 \
     --dataset_name wikitext \
     --dataset_config_name wikitext-2-raw-v1 \
     --per_device_train_batch_size 8 \
@@ -74,4 +74,4 @@ python -u -m torch.distributed.launch --nproc_per_node 4 transformers/examples/p
     --do_train \
     --do_eval \
     --tokenizer_name "bert-base-uncased" \
-    --output_dir lower-results/bert-0.3/mlm
+    --output_dir lower-results/bert-0.1/mlm
