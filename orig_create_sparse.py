@@ -153,7 +153,7 @@ config = BertConfig.from_pretrained(
 #         )
 # model.save_pretrained(f"full_prune/bert-base")
 
-sparsity_values = [0.1,0.3,0.45,0.495]
+sparsity_values = [0.7,0.9,0.95,0.99]
 # sparsity_values = [0.495]
 
 
@@ -163,7 +163,7 @@ for s in sparsity_values:
             from_tf=bool(".ckpt" in 'bert-base-uncased'),
             config=config
         )
-    model = pruning_model_lower(model,s)
+    model = pruning_model_whole(model,s)
 
     zero = see_weight_rate(model)
     print('zero rate', zero)
