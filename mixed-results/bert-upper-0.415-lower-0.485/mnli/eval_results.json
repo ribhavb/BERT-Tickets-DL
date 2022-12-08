@@ -1,0 +1,16 @@
+{
+    "epoch": 1.0,
+    "epoch_mm": 1.0,
+    "eval_accuracy": 0.5978604177279674,
+    "eval_accuracy_mm": 0.5907241659886087,
+    "eval_loss": 0.8733022809028625,
+    "eval_loss_mm": 0.871898889541626,
+    "eval_runtime": 5.1539,
+    "eval_runtime_mm": 5.4682,
+    "eval_samples": 9815,
+    "eval_samples_mm": 9832,
+    "eval_samples_per_second": 1904.395,
+    "eval_samples_per_second_mm": 1798.034,
+    "eval_steps_per_second": 59.567,
+    "eval_steps_per_second_mm": 56.326
+}
