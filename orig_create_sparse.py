@@ -203,8 +203,8 @@ config = BertConfig.from_pretrained(
 #             config=config
 #         )
 # model.save_pretrained(f"full_prune/bert-base")
-sparsity_values_u = [0.3,0.33,0.43,0.415]
-sparsity_values_l = [0.4,0.37,0.47,0.485] 
+sparsity_values_u = [0.46,0.468,0.491,0.493]
+sparsity_values_l = [0.49,0.482,0.499,0.497] 
 
 
 for i in range(len(sparsity_values_u)):
